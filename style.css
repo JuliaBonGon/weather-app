@@ -63,5 +63,5 @@ button:hover {
     height: 200px;
     margin:0 auto 10px;
     margin-bottom: 0;
-    display:none;
+    /* display:none; */
 }

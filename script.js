@@ -4,10 +4,12 @@ const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search';
 const cityInput = document.getElementById('cityInput');
 const searchButton = document.getElementById('searchButton');
 // const city = document.getElementById('city');
-const temperatureDiv = document.getElementById('temperature');
+const maxTemperaturePar = document.getElementById('max-temperature');
+const minTemperaturePar = document.getElementById('min-temperature');
 const descriptionDiv = document.getElementById('description');
 const weatherIcon = document.getElementById('weather-icon');
 const hourlyForecastDiv = document.getElementById('hourly-forecast');
+const fiveDayForecastDiv = document.getElementById("5-days-forecast");
 
 
 //TODO: enter field for city location
@@ -57,21 +59,16 @@ function fetchWeather(city) {
             console.log(`Coordinates: ${longitude}, ${latitude}`);
 
             fetchWeatherData(latitude,longitude);
-            //TODO:Create URL for weather API
-
-
-            //TODO:Fetch weather API
-
         })
         .catch(error => {
-            console.error('Error fetching weather data:', error);
-            alert ('Error fetching current weather data. Please try again.');
+            console.error('Error fetching location weather data:', error);
+            alert ('Error fetching current location weather data. Please try again.');
         });
     
 }
-
+ //TODO:Create URL for weather API
 function fetchWeatherData(latitude,longitude) {
-    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`;
     fetch(weatherApiUrl)
         .then(response => response.json())
         .then(data => {
@@ -84,16 +81,24 @@ function fetchWeatherData(latitude,longitude) {
         });
 }
 
-
+//TODO:Fetch weather API
 function displayWeatherData(data) {
-// //Clear previous content
-// temperatureDiv.innerHTML = "";
-// hourlyForecastDiv.innerHTML = "";
-// descriptionDiv.innerHTML = "";
+//Clear previous content
+maxTemperaturePar.innerHTML = "";
+minTemperaturePar.innerHTML = "";
+hourlyForecastDiv.innerHTML = "";
+descriptionDiv.innerHTML = "";
 
-const todayTemp = data.daily.temperature_2m_max[0];
-temperatureDiv.innerHTML = `Max temp todays is: ${todayTem}°C`;
-
+const todayMaxTemp = data.daily.temperature_2m_max[0];
+maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
+const todayMinTemp = data.daily.temperature_2m_min[0];
+minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
+// const hourlyTemp = data.hourly;
+// hourlyForecastDiv.innerHTML = `Hour temp ${hourlyTemp}`;
+const fiveDayForecast = data.daily.forecast_days;
+console.log(fiveDayForecast);
+console.log(data);
+fiveDayForecastDiv.innerHTML = `Five days forecast ${fiveDayForecast}`;
 }
 //TODO: Use API for 5 days weather
 
