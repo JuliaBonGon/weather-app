@@ -7,9 +7,9 @@ const searchButton = document.getElementById('searchButton');
 const maxTemperaturePar = document.getElementById('max-temperature');
 const minTemperaturePar = document.getElementById('min-temperature');
 const descriptionDiv = document.getElementById('description');
-const weatherIcon = document.getElementById('weather-icon');
+const weatherIconElem = document.getElementById('weather-icon-element');
 const hourlyForecastDiv = document.getElementById('hourly-forecast');
-const fiveDayForecastDiv = document.getElementById("5-days-forecast");
+const fiveDayForecastPar = document.getElementById("5-days-forecast");
 
 
 //TODO: enter field for city location
@@ -68,7 +68,7 @@ function fetchWeather(city) {
 }
  //TODO:Create URL for weather API
 function fetchWeatherData(latitude,longitude) {
-    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`;
+    const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=5`;
     fetch(weatherApiUrl)
         .then(response => response.json())
         .then(data => {
@@ -81,25 +81,79 @@ function fetchWeatherData(latitude,longitude) {
         });
 }
 
+//TODO: Function to display weather icon
+const weatherCodeToIcon = {
+    0: 'clear_sky.png',
+    1: 'mainly_clear.png',
+    2: 'partly_cloudy.png',
+    3: 'overcast.png',
+    45: 'fog.png',
+    48: 'rime_fog.png',
+    51: 'light_drizzle.png',
+    53: 'moderate_drizzle.png',
+    55: 'dense_drizzle.png',
+    56: 'light_freezing_drizzle.png',
+    57: 'dense_freezing_drizzle.png',
+    61: 'light_rain.png',
+    63: 'moderate_rain.png',
+    65: 'heavy_rain.png',
+    66: 'light_freezing_rain.png',
+    67: 'heavy_freezing_rain.png',
+    71: 'slight_snowfall.png',
+    73: 'moderate_snowfall.png',
+    75: 'heavy_snowfall.png',
+    77: 'snow_grains.png',
+    80: 'slight_rain_showers.png',
+    81: 'moderate_rain_showers.png',
+    82: 'violent_rain_showers.png',
+    85: 'slight_snow_showers.png',
+    86: 'heavy_snow_showers.png',
+    95: 'thunderstorm.png',
+    96: 'thunderstorm_with_slight_hail.png',
+    99: 'thunderstorm_with_heavy_hail.png'
+};
+
 //TODO:Fetch weather API
 function displayWeatherData(data) {
 //Clear previous content
 maxTemperaturePar.innerHTML = "";
 minTemperaturePar.innerHTML = "";
 hourlyForecastDiv.innerHTML = "";
-descriptionDiv.innerHTML = "";
+weatherIconElem.innerHTML = "";
 
 const todayMaxTemp = data.daily.temperature_2m_max[0];
 maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
 const todayMinTemp = data.daily.temperature_2m_min[0];
 minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
+
+
+const weatherCode = data.daily.weather_code[0];
+console.log(`Today's weather code: ${weatherCode}`);
+
+const icon = weatherCodeToIcon[weatherCode];
+console.log(`Today's icon URL: icons/${icon}`);
+if (icon) {
+    weatherIconElem.innerHTML = `<img src="icons/${icon}" alt="Weather Icon">`;
+};
+
+
 // const hourlyTemp = data.hourly;
 // hourlyForecastDiv.innerHTML = `Hour temp ${hourlyTemp}`;
-const fiveDayForecast = data.daily.forecast_days;
-console.log(fiveDayForecast);
-console.log(data);
-fiveDayForecastDiv.innerHTML = `Five days forecast ${fiveDayForecast}`;
+let fiveDayForecastMes = "";
+    for (let i = 0; i < data.daily.temperature_2m_max.length; i++) {
+        const date = data.daily.time[i];
+        const maxTemp = data.daily.temperature_2m_max[i];
+        const minTemp = data.daily.temperature_2m_min[i];
+        const dailyWeatherCode = data.daily.weather_code[i];
+        const dailyIcon = weatherCodeToIcon[dailyWeatherCode] || 'default.png';
+        fiveDayForecastMes += `<p>${date}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
+    }
+    fiveDayForecastPar.innerHTML = fiveDayForecastMes;
+
+
 }
+
+
 //TODO: Use API for 5 days weather
 
 //TODO: DOM manipulation to show 5 days
