@@ -9,7 +9,7 @@ const minTemperaturePar = document.getElementById('min-temperature');
 const descriptionDiv = document.getElementById('description');
 const weatherIconElem = document.getElementById('weather-icon-element');
 const hourlyForecastDiv = document.getElementById('hourly-forecast');
-const fiveDayForecastPar = document.getElementById("5-days-forecast");
+const fiveDayForecastPar = document.getElementById("five-days-forecast");
 
 
 //TODO: enter field for city location
@@ -95,7 +95,7 @@ const weatherCodeToIcon = {
     56: 'light_freezing_drizzle.png',
     57: 'dense_freezing_drizzle.png',
     61: 'light_rain.png',
-    63: 'moderate_rain.png',
+    63: 'moderate_rain_showers.png',
     65: 'heavy_rain.png',
     66: 'light_freezing_rain.png',
     67: 'heavy_freezing_rain.png',
@@ -133,24 +133,39 @@ console.log(`Today's weather code: ${weatherCode}`);
 const icon = weatherCodeToIcon[weatherCode];
 console.log(`Today's icon URL: icons/${icon}`);
 if (icon) {
-    weatherIconElem.innerHTML = `<img src="icons/${icon}" alt="Weather Icon">`;
+    weatherIconElem.style.display = "block";
+    weatherIconElem.src = `icons/${icon}`;
+    weatherIconElem.alt = "Weather Icon";
 };
 
 
-// const hourlyTemp = data.hourly;
-// hourlyForecastDiv.innerHTML = `Hour temp ${hourlyTemp}`;
+//TODO: 5 days forecast
+
+
 let fiveDayForecastMes = "";
     for (let i = 0; i < data.daily.temperature_2m_max.length; i++) {
-        const date = data.daily.time[i];
+        const isoDate = data.daily.time[i];
+        console.log(isoDate);
+        console.log(`ISO Date: ${isoDate}`);
+
+        const dateObject = new Date(isoDate);
+        const adaptDate = dateObject.toLocaleDateString(undefined, {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+        });
+        console.log(`Adapted Date: ${adaptDate}`);
+        
+
+
         const maxTemp = data.daily.temperature_2m_max[i];
         const minTemp = data.daily.temperature_2m_min[i];
         const dailyWeatherCode = data.daily.weather_code[i];
         const dailyIcon = weatherCodeToIcon[dailyWeatherCode] || 'default.png';
-        fiveDayForecastMes += `<p>${date}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
+        fiveDayForecastMes += `<p>${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
     }
+    console.log(fiveDayForecastMes);
     fiveDayForecastPar.innerHTML = fiveDayForecastMes;
-
-
 }
 
 
