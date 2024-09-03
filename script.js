@@ -123,6 +123,7 @@ hourlyForecastDiv.innerHTML = "";
 weatherIconElem.innerHTML = "";
 fiveDayForecastDiv.innerHTML = "";
 
+
 const todayMaxTemp = data.daily.temperature_2m_max[0];
 maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
 const todayMinTemp = data.daily.temperature_2m_min[0];
@@ -141,8 +142,12 @@ if (icon) {
 };
 
 //TODO: Display city name
+
 const city = cityInput.value;
 const todaysInfoSection = document.querySelector(".today-weather-result-container");
+
+todaysInfoSection.innerHTML = "";
+
 const todaysInfo = document.createElement("p");
 todaysInfo.textContent = `Weather for ${city}`;
 todaysInfoSection.appendChild(todaysInfo);
