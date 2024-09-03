@@ -37,6 +37,7 @@ cityInput.addEventListener('keydown', (event) => {
         }
         else {
             fetchWeather(city);
+
         }
     }
     });
@@ -139,11 +140,18 @@ if (icon) {
     weatherIconElem.alt = "Weather Icon";
 };
 
+//TODO: Display city name
+const city = cityInput.value;
+const todaysInfoSection = document.querySelector(".today-weather-result-container");
+const todaysInfo = document.createElement("p");
+todaysInfo.textContent = `Weather for ${city}`;
+todaysInfoSection.appendChild(todaysInfo);
+
 
 //TODO: 5 days forecast
+fiveDayForecastDiv.innerHTML = "";
 
 
-let fiveDayForecastMes = "";
     for (let i = 0; i < data.daily.temperature_2m_max.length; i++) {
         const isoDate = data.daily.time[i];
         console.log(isoDate);
@@ -171,13 +179,13 @@ let fiveDayForecastMes = "";
         eachDayiconImg.setAttribute("src", `icons/${dailyIcon}`);
         eachDayiconImg.setAttribute("alt", "Weather Icon");
     
-    fiveDayForecastDiv.appendChild(eachDayforecastText);
-    fiveDayForecastDiv.appendChild(eachDayiconImg);
+    fiveDayForecastSection.appendChild(eachDayforecastText);
+    fiveDayForecastSection.appendChild(eachDayiconImg);
 
     fiveDayForecastDiv.appendChild(fiveDayForecastSection);
     }
-  
-}
+} ;
+
 
 
 //TODO: Use API for 5 days weather
