@@ -9,7 +9,7 @@ const minTemperaturePar = document.getElementById('min-temperature');
 const descriptionDiv = document.getElementById('description');
 const weatherIconElem = document.getElementById('weather-icon-element');
 const hourlyForecastDiv = document.getElementById('hourly-forecast');
-const fiveDayForecastPar = document.getElementById("five-days-forecast");
+const fiveDayForecastDiv = document.getElementById("five-days-forecast");
 
 
 //TODO: enter field for city location
@@ -120,6 +120,7 @@ maxTemperaturePar.innerHTML = "";
 minTemperaturePar.innerHTML = "";
 hourlyForecastDiv.innerHTML = "";
 weatherIconElem.innerHTML = "";
+fiveDayForecastDiv.innerHTML = "";
 
 const todayMaxTemp = data.daily.temperature_2m_max[0];
 maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
@@ -162,13 +163,25 @@ let fiveDayForecastMes = "";
         const minTemp = data.daily.temperature_2m_min[i];
         const dailyWeatherCode = data.daily.weather_code[i];
         const dailyIcon = weatherCodeToIcon[dailyWeatherCode] || 'default.png';
-        fiveDayForecastMes += `<p>${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
+        // fiveDayForecastMes += `<p>${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
+
+        const fiveDayForecastSection = document.createElement("p");
+        const eachDayforecastText = document.createTextNode(`${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C `);
+        const eachDayiconImg = document.createElement("img");
+        eachDayiconImg.setAttribute("src", `icons/${dailyIcon}`);
+        eachDayiconImg.setAttribute("alt", "Weather Icon");
+    
+    fiveDayForecastDiv.appendChild(eachDayforecastText);
+    fiveDayForecastDiv.appendChild(eachDayiconImg);
+
+    fiveDayForecastDiv.appendChild(fiveDayForecastSection);
     }
-    console.log(fiveDayForecastMes);
-    fiveDayForecastPar.innerHTML = fiveDayForecastMes;
+  
 }
 
 
 //TODO: Use API for 5 days weather
 
 //TODO: DOM manipulation to show 5 days
+
+
