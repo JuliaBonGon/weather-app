@@ -4,11 +4,11 @@ const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search';
 const cityInput = document.getElementById('cityInput');
 const searchButton = document.getElementById('searchButton');
 // const city = document.getElementById('city');
-const maxTemperaturePar = document.getElementById('max-temperature');
-const minTemperaturePar = document.getElementById('min-temperature');
-const descriptionDiv = document.getElementById('description');
-const weatherIconElem = document.getElementById('weather-icon-element');
-const hourlyForecastDiv = document.getElementById('hourly-forecast');
+// const maxTemperaturePar = document.getElementById('max-temperature');
+// const minTemperaturePar = document.getElementById('min-temperature');
+// const descriptionDiv = document.getElementById('description');
+// const weatherIconElem = document.getElementById('weather-icon-element');
+
 const fiveDayForecastDiv = document.getElementById("five-days-forecast");
 const todaysInfoSection = document.querySelector(".today-weather-result-container");
 
@@ -77,7 +77,8 @@ function fetchWeatherData(latitude, longitude, name, country) {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            displayWeatherData(data);
+            console.log(data, name, country);
+           
             displayWeatherData(data, name, country);
         })
         .catch(error => {
@@ -121,17 +122,19 @@ const weatherCodeToIcon = {
 //TODO:Fetch weather API
 function displayWeatherData(data, name, country) {
 //Clear previous content
-maxTemperaturePar.innerHTML = "";
-minTemperaturePar.innerHTML = "";
-hourlyForecastDiv.innerHTML = "";
-fiveDayForecastDiv.innerHTML = "";
 todaysInfoSection.innerHTML = "";
+fiveDayForecastDiv.innerHTML = "";
 
-const todayMaxTemp = data.daily.temperature_2m_max[0];
-maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
-const todayMinTemp = data.daily.temperature_2m_min[0];
-minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
 
+
+//TODO: Display city name
+
+// const city = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1);
+// console.log (name, country);
+const todaysInfo = document.createElement("p");
+todaysInfo.classList.add("today-name-par");
+todaysInfo.textContent = `Weather for ${name}, ${country}`;
+todaysInfoSection.prepend(todaysInfo);
 
 const weatherCode = data.daily.weather_code[0];
 console.log(`Today's weather code: ${weatherCode}`);
@@ -142,19 +145,28 @@ if (icon) {
     const todayIconImg = document.createElement("img");
     todayIconImg.setAttribute("src", `icons/${icon}`);
     todayIconImg.setAttribute("alt", "Weather Icon");
+    todayIconImg.classList.add ("today-icon-img");
     todaysInfoSection.appendChild(todayIconImg);
-//     weatherIconElem.style.display = "block";
-//     weatherIconElem.src = `icons/${icon}`;
-//     weatherIconElem.alt = "Weather Icon";
-// };
 
-//TODO: Display city name
+};
 
-// const city = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1);
-console.log (name, country);
-const todaysInfo = document.createElement("p");
-todaysInfo.textContent = `Weather for ${name}, ${country}`;
-todaysInfoSection.appendChild(todaysInfo);
+// Create max min temp section
+const maxTemperaturePar = document.createElement('p');
+const minTemperaturePar = document.createElement('p');
+const todayMaxTemp = data.daily.temperature_2m_max[0];
+maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
+const todayMinTemp = data.daily.temperature_2m_min[0];
+minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
+
+ // Append temperature paragraphs to the section
+ const maxMinTempTodayDiv = document.createElement('div');
+ maxMinTempTodayDiv.classList.add('max-min-temp');
+
+ maxMinTempTodayDiv.appendChild(maxTemperaturePar);
+ maxMinTempTodayDiv.appendChild(minTemperaturePar);
+ todaysInfoSection.appendChild(maxMinTempTodayDiv);
+
+
 
 
 //TODO: 5 days forecast
@@ -195,4 +207,4 @@ fiveDayForecastDiv.innerHTML = "";
     }
 } ;
 
-}
+

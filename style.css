@@ -58,3 +58,21 @@ button:hover {
     background: #8b48d7;
 }
 
+.today-weather-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; 
+}
+
+
+.today-name-par {
+    display: flex;
+    flex-direction: column;
+   
+} 
+
+.today-icon-img {
+    width: 100px;
+    height: 100px;
+} 
