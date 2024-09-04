@@ -10,7 +10,7 @@ const descriptionDiv = document.getElementById('description');
 const weatherIconElem = document.getElementById('weather-icon-element');
 const hourlyForecastDiv = document.getElementById('hourly-forecast');
 const fiveDayForecastDiv = document.getElementById("five-days-forecast");
-
+const todaysInfoSection = document.querySelector(".today-weather-result-container");
 
 //TODO: enter field for city location
 //TODO: eventlistener on submit botton or ENTER
@@ -57,9 +57,12 @@ function fetchWeather(city) {
             //TODO: Store longitud and lat invariables
             const longitude = data.results[0].longitude;
             const latitude = data.results[0].latitude;
+            const city = data.results[0].name;
+            const country = data.results[0].country;
             console.log(`Coordinates: ${longitude}, ${latitude}`);
+            console.log(country);
 
-            fetchWeatherData(latitude,longitude);
+            fetchWeatherData(latitude, longitude, city, country);
         })
         .catch(error => {
             console.error('Error fetching location weather data:', error);
@@ -68,13 +71,14 @@ function fetchWeather(city) {
     
 }
  //TODO:Create URL for weather API
-function fetchWeatherData(latitude,longitude) {
+function fetchWeatherData(latitude, longitude, name, country) {
     const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=5`;
     fetch(weatherApiUrl)
         .then(response => response.json())
         .then(data => {
             console.log(data);
             displayWeatherData(data);
+            displayWeatherData(data, name, country);
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
@@ -115,14 +119,13 @@ const weatherCodeToIcon = {
 };
 
 //TODO:Fetch weather API
-function displayWeatherData(data) {
+function displayWeatherData(data, name, country) {
 //Clear previous content
 maxTemperaturePar.innerHTML = "";
 minTemperaturePar.innerHTML = "";
 hourlyForecastDiv.innerHTML = "";
-weatherIconElem.innerHTML = "";
 fiveDayForecastDiv.innerHTML = "";
-
+todaysInfoSection.innerHTML = "";
 
 const todayMaxTemp = data.daily.temperature_2m_max[0];
 maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
@@ -136,20 +139,21 @@ console.log(`Today's weather code: ${weatherCode}`);
 const icon = weatherCodeToIcon[weatherCode];
 console.log(`Today's icon URL: icons/${icon}`);
 if (icon) {
-    weatherIconElem.style.display = "block";
-    weatherIconElem.src = `icons/${icon}`;
-    weatherIconElem.alt = "Weather Icon";
-};
+    const todayIconImg = document.createElement("img");
+    todayIconImg.setAttribute("src", `icons/${icon}`);
+    todayIconImg.setAttribute("alt", "Weather Icon");
+    todaysInfoSection.appendChild(todayIconImg);
+//     weatherIconElem.style.display = "block";
+//     weatherIconElem.src = `icons/${icon}`;
+//     weatherIconElem.alt = "Weather Icon";
+// };
 
 //TODO: Display city name
 
-const city = cityInput.value;
-const todaysInfoSection = document.querySelector(".today-weather-result-container");
-
-todaysInfoSection.innerHTML = "";
-
+// const city = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1);
+console.log (name, country);
 const todaysInfo = document.createElement("p");
-todaysInfo.textContent = `Weather for ${city}`;
+todaysInfo.textContent = `Weather for ${name}, ${country}`;
 todaysInfoSection.appendChild(todaysInfo);
 
 
@@ -191,10 +195,4 @@ fiveDayForecastDiv.innerHTML = "";
     }
 } ;
 
-
-
-//TODO: Use API for 5 days weather
-
-//TODO: DOM manipulation to show 5 days
-
-
+}

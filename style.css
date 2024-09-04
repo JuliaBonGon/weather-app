@@ -58,15 +58,3 @@ button:hover {
     background: #8b48d7;
 }
 
-#weather-icon-element {
-    width: 200px;
-    height: 200px;
-    margin:0 auto 10px;
-    margin-bottom: 0;
-    display:none;
-}
-/* 
-#five-days-forecast {
-    display: flex;
-    flex-direction: column;
-} */
