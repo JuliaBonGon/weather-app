@@ -127,10 +127,7 @@ fiveDayForecastDiv.innerHTML = "";
 
 
 
-//TODO: Display city name
-
-// const city = cityInput.value.charAt(0).toUpperCase() + cityInput.value.slice(1);
-// console.log (name, country);
+//TODO: Display todays info
 const todaysInfo = document.createElement("p");
 todaysInfo.classList.add("today-name-par");
 todaysInfo.textContent = `Weather for ${name}, ${country}`;
@@ -141,6 +138,7 @@ console.log(`Today's weather code: ${weatherCode}`);
 
 const icon = weatherCodeToIcon[weatherCode];
 console.log(`Today's icon URL: icons/${icon}`);
+
 if (icon) {
     const todayIconImg = document.createElement("img");
     todayIconImg.setAttribute("src", `icons/${icon}`);
@@ -158,7 +156,7 @@ maxTemperaturePar.innerHTML = `Max: ${todayMaxTemp}°C`;
 const todayMinTemp = data.daily.temperature_2m_min[0];
 minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
 
- // Append temperature paragraphs to the section
+ // Append temperature paragraphs to the div
  const maxMinTempTodayDiv = document.createElement('div');
  maxMinTempTodayDiv.classList.add('max-min-temp');
 
@@ -166,13 +164,22 @@ minTemperaturePar.innerHTML = `Min: ${todayMinTemp}°C`;
  maxMinTempTodayDiv.appendChild(minTemperaturePar);
  todaysInfoSection.appendChild(maxMinTempTodayDiv);
 
-
+// Create a parent container for all daily info boxes
+const dailyInfoBoxesContainer = document.createElement("div");
+dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
 
 
 //TODO: 5 days forecast
-fiveDayForecastDiv.innerHTML = "";
+// fiveDayForecastDiv.innerHTML = "";
 
+//Add title to 5days forecast
+    const fiveDayTitle = document.createElement('p');
+    fiveDayTitle.classList.add("title");
+    fiveDayTitle.textContent = "Five days weather forecast";
+    fiveDayForecastDiv.appendChild(fiveDayTitle);
 
+ 
+// Iterate over each day and create daily info boxes
     for (let i = 0; i < data.daily.temperature_2m_max.length; i++) {
         const isoDate = data.daily.time[i];
         console.log(isoDate);
@@ -184,7 +191,7 @@ fiveDayForecastDiv.innerHTML = "";
             month: 'short',
             day: 'numeric'
         });
-        console.log(`Adapted Date: ${adaptDate}`);
+
         
 
 
@@ -192,18 +199,38 @@ fiveDayForecastDiv.innerHTML = "";
         const minTemp = data.daily.temperature_2m_min[i];
         const dailyWeatherCode = data.daily.weather_code[i];
         const dailyIcon = weatherCodeToIcon[dailyWeatherCode] || 'default.png';
-        // fiveDayForecastMes += `<p>${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C <img src="icons/${dailyIcon}" alt="Weather Icon"></p>`;
+     
+// Create daily info box
+        const dailyInfoBox = document.createElement("section");
+        dailyInfoBox.classList.add("daily-info-box");
+        
+        
+       // Create and append elements
+    const dateSpan = document.createElement("span");
+    dateSpan.classList.add("date");
+    dateSpan.textContent = adaptDate;
 
-        const fiveDayForecastSection = document.createElement("p");
-        const eachDayforecastText = document.createTextNode(`${adaptDate}: Max ${maxTemp}°C, Min ${minTemp}°C `);
-        const eachDayiconImg = document.createElement("img");
-        eachDayiconImg.setAttribute("src", `icons/${dailyIcon}`);
-        eachDayiconImg.setAttribute("alt", "Weather Icon");
-    
-    fiveDayForecastSection.appendChild(eachDayforecastText);
-    fiveDayForecastSection.appendChild(eachDayiconImg);
+    const maxTempSpan = document.createElement("span");
+    maxTempSpan.classList.add("max-temp");
+    maxTempSpan.textContent = `Max: ${maxTemp}°C`;
 
-    fiveDayForecastDiv.appendChild(fiveDayForecastSection);
+    const minTempSpan = document.createElement("span");
+    minTempSpan.classList.add("min-temp");
+    minTempSpan.textContent = `Min: ${minTemp}°C`;
+
+    const eachDayiconImg = document.createElement("img");
+    eachDayiconImg.setAttribute("src", `icons/${dailyIcon}`);
+    eachDayiconImg.setAttribute("alt", "Weather Icon");
+
+    // Append elements to the forecast section
+    dailyInfoBox.appendChild(dateSpan);
+    dailyInfoBox.appendChild(maxTempSpan);
+    dailyInfoBox.appendChild(minTempSpan);
+    dailyInfoBox.appendChild(eachDayiconImg);
+
+    dailyInfoBoxesContainer.appendChild(dailyInfoBox);
+   // Append the parent container to the five-day forecast div
+    fiveDayForecastDiv.appendChild(dailyInfoBoxesContainer);
     }
 } ;
 

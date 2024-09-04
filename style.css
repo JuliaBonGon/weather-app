@@ -10,7 +10,8 @@ body {
 
 #weather-container {
     background-color: rgba(255,255,255, 0.3);
-    max-width: 400px;
+    width: 100%;
+    max-width: 800px;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba (0, 0, 0, 0.1);
@@ -65,12 +66,14 @@ button:hover {
     justify-content: center; 
     width: 100%;
     overflow-x: auto;
+    margin: 15px 0;
 }
 
 
 .today-name-par {
     display: flex;
     flex-direction: column;
+    margin: 10px 0;
    
 } 
 
@@ -81,7 +84,35 @@ button:hover {
 
 #five-days-forecast {
     display: flex;
+    flex-direction: column;
     overflow: scroll;
-    /* overflow: hidden; */
+    overflow: hidden;
     width: 100%;
 }
+/* 
+.daily-info-box {
+    display: flex;
+    flex-direction: row;
+
+}
+.daily-info {
+    width: 180px;
+} */
+
+/* media queries */
+/* #weather-container {
+     */
+
+     @media  (max-width:300px) {
+        #weather-container {
+            width: 100%;
+            max-width: 290px;
+            margin: 0 10px;
+            box-sizing: border-box;
+        }
+    
+        .daily-info {
+            width: 100%;
+        }
+    }
+       
