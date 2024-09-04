@@ -13,9 +13,9 @@ body {
     max-width: 400px;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 8px 32px rgba (0, 0, 0 0.1);
+    box-shadow: 0 8px 32px rgba (0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    border: solid 1 px;
+    border: solid 1px;
     text-align:center;
     display: flex;
     flex-direction: column;
@@ -63,6 +63,8 @@ button:hover {
     flex-direction: column;
     align-items: center; /* Center horizontally */
     justify-content: center; 
+    width: 100%;
+    overflow-x: auto;
 }
 
 
@@ -76,3 +78,10 @@ button:hover {
     width: 100px;
     height: 100px;
 } 
+
+#five-days-forecast {
+    display: flex;
+    overflow: scroll;
+    /* overflow: hidden; */
+    width: 100%;
+}
