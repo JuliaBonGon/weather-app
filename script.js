@@ -174,7 +174,7 @@ dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
 
 //Add title to 5days forecast
     const fiveDayTitle = document.createElement('p');
-    fiveDayTitle.classList.add("title");
+    fiveDayTitle.classList.add("five-days-title");
     fiveDayTitle.textContent = "Five days weather forecast";
     fiveDayForecastDiv.appendChild(fiveDayTitle);
 
@@ -218,15 +218,16 @@ dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
     minTempSpan.classList.add("min-temp");
     minTempSpan.textContent = `Min: ${minTemp}°C`;
 
-    const eachDayiconImg = document.createElement("img");
-    eachDayiconImg.setAttribute("src", `icons/${dailyIcon}`);
-    eachDayiconImg.setAttribute("alt", "Weather Icon");
+    const dailyIconImg = document.createElement("img");
+    dailyIconImg.classList.add("daily-icon")
+    dailyIconImg.setAttribute("src", `icons/${dailyIcon}`);
+    dailyIconImg.setAttribute("alt", "Weather Icon");
 
     // Append elements to the forecast section
     dailyInfoBox.appendChild(dateSpan);
     dailyInfoBox.appendChild(maxTempSpan);
     dailyInfoBox.appendChild(minTempSpan);
-    dailyInfoBox.appendChild(eachDayiconImg);
+    dailyInfoBox.appendChild(dailyIconImg);
 
     dailyInfoBoxesContainer.appendChild(dailyInfoBox);
    // Append the parent container to the five-day forecast div
