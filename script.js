@@ -1,5 +1,6 @@
 // const apiKey = "" Not needed
 const apiUrl = 'https://geocoding-api.open-meteo.com/v1/search';
+const unsplashAccessKey = 'LZwuz3lje8FCf4lp6UotirN8qvme7Z6tqjhpJjrFu_8';
 
 const cityInput = document.getElementById('cityInput');
 const searchButton = document.getElementById('searchButton');
@@ -12,11 +13,11 @@ const searchButton = document.getElementById('searchButton');
 const fiveDayForecastDiv = document.getElementById("five-days-forecast");
 const todaysInfoSection = document.querySelector(".today-weather-result-container");
 
-//TODO: enter field for city location
-//TODO: eventlistener on submit botton or ENTER
+//Get local.storage of previously inserted city
+cityInput.value = localStorage.getItem('cityInput');
 
 
-
+// Eventlistener on submit botton or ENTER
 searchButton.addEventListener('click', () => {
     const city = cityInput.value;
     if (!city) {
@@ -24,7 +25,9 @@ searchButton.addEventListener('click', () => {
         return;
     }               
     else {
-        fetchWeather(city);
+        localStorage.setItem('cityInput', city); // Store city in localStorage
+        fetchInsertedCity(city);
+        fetchCityImage(city); // Fetch and display city image from Unsplash
     }
 });
 
@@ -36,25 +39,55 @@ cityInput.addEventListener('keydown', (event) => {
             return;
         }
         else {
-            fetchWeather(city);
-
+            localStorage.setItem('cityInput', city); // Store city in localStorage
+            fetchInsertedCity(city);
+            fetchCityImage(city); // Fetch and display city image from Unsplash
         }
     }
     });
 
-//TODO: Use API to get location
 
-function fetchWeather(city) {
+//Use API to get photo
+function fetchCityImage(city) {
+    const unsplashUrl = `https://api.unsplash.com/search/photos?page=1&query=${city}&client_id=${unsplashAccessKey}&per_page=5`;
+
+    fetch(unsplashUrl)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Unsplash data:', data);
+            const photoUrls = data.results.map(photo => photo.urls.regular);
+            displayPhotoGallery(photoUrls);
+})
+}
+
+//Create cityimg in teh DOM
+function displayPhotoGallery(photoUrls) {
+    const cityImageDiv = document.getElementById('city-image-container');
+    cityImageDiv.innerHTML = ''; // Clear previous image
+
+    photoUrls.forEach(url => {
+        const imgElement = document.createElement('img');
+        imgElement.setAttribute('src', url);
+        imgElement.setAttribute('alt', `${photoUrls} photo from Unsplash`);
+        imgElement.classList.add('gallery-photo'); 
+
+        cityImageDiv.appendChild(imgElement);
+    });
+}
+
+    //Use API to get location
+
+function fetchInsertedCity(city) {
     const url = `${apiUrl}?name=${(city)}&count=10&language=en`;
     console.log(url);
 
     fetch(url)
         .then(response => response.json()) //The response needs to be transformed for JS to be able to read it
-        .then(data => { //Put the response into the data variable. Data is our response already in teh format needed to work with it
-            //TODO: getting result into website elements (title, city, country, temperature)
+        .then(data => { //Put the response into the data variable. Data is our response already in the format needed to work with it
+            // getting result into website elements (title, city, country, temperature)
             console.log(data);
 
-            //TODO: Store longitud and lat invariables
+            // Store longitud and lat invariables
             const longitude = data.results[0].longitude;
             const latitude = data.results[0].latitude;
             const city = data.results[0].name;
@@ -62,7 +95,7 @@ function fetchWeather(city) {
             console.log(`Coordinates: ${longitude}, ${latitude}`);
             console.log(country);
 
-            fetchWeatherData(latitude, longitude, city, country);
+            fetchCityData(latitude, longitude, city, country);
         })
         .catch(error => {
             console.error('Error fetching location weather data:', error);
@@ -71,13 +104,13 @@ function fetchWeather(city) {
     
 }
  //TODO:Create URL for weather API
-function fetchWeatherData(latitude, longitude, name, country) {
+function fetchCityData(latitude, longitude, name, country) {
     const weatherApiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto&forecast_days=5`;
     fetch(weatherApiUrl)
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            console.log(data, name, country);
+            console.log(name, country);
            
             displayWeatherData(data, name, country);
         })
@@ -169,8 +202,7 @@ const dailyInfoBoxesContainer = document.createElement("div");
 dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
 
 
-//TODO: 5 days forecast
-// fiveDayForecastDiv.innerHTML = "";
+//5 days forecast
 
 //Add title to 5days forecast
     const fiveDayTitle = document.createElement('p');
@@ -193,7 +225,6 @@ dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
         });
 
         
-
 
         const maxTemp = data.daily.temperature_2m_max[i];
         const minTemp = data.daily.temperature_2m_min[i];
@@ -234,5 +265,4 @@ dailyInfoBoxesContainer.classList.add("daily-info-boxes-container");
     fiveDayForecastDiv.appendChild(dailyInfoBoxesContainer);
     }
 } ;
-
 

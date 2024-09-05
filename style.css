@@ -6,6 +6,20 @@ body {
     justify-content: center;
     height: 100vh;
     margin:0;
+    
+}
+
+.city-image-container {
+    width: 100%;
+    display:flex;
+    position: relative;
+    
+}
+.gallery-photo {
+    max-width: 100%;
+    max-height: 300px;
+    margin-top: 20px;
+    border-radius: 10px;
 }
 
 #weather-container {
