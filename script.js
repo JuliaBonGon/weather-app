@@ -49,30 +49,37 @@ cityInput.addEventListener('keydown', (event) => {
 
 //Use API to get photo
 function fetchCityImage(city) {
-    const unsplashUrl = `https://api.unsplash.com/search/photos?page=1&query=${city}&client_id=${unsplashAccessKey}&per_page=5`;
+    const unsplashUrl = `https://api.unsplash.com/search/photos?page=1&query=${city}&client_id=${unsplashAccessKey}&per_page=20`;
 
     fetch(unsplashUrl)
         .then(response => response.json())
         .then(data => {
             console.log('Unsplash data:', data);
             const photoUrls = data.results.map(photo => photo.urls.regular);
-            displayPhotoGallery(photoUrls);
-})
+            displayRandomPhoto(photoUrls);
+        })
+        .catch(error => {
+                console.error('Error fetching city images:', error);
+            
+});
 }
 
 //Create cityimg in teh DOM
-function displayPhotoGallery(photoUrls) {
+function displayRandomPhoto(photoUrls) {
     const cityImageDiv = document.getElementById('city-image-container');
     cityImageDiv.innerHTML = ''; // Clear previous image
 
-    photoUrls.forEach(url => {
+    if (photoUrls.length > 0) {
+        const randomPhotoIndex = Math.floor(Math.random()* photoUrls.length);
+        const randomUrl = photoUrls[randomPhotoIndex];
+
         const imgElement = document.createElement('img');
-        imgElement.setAttribute('src', url);
-        imgElement.setAttribute('alt', `${photoUrls} photo from Unsplash`);
-        imgElement.classList.add('gallery-photo'); 
+        imgElement.setAttribute('src', randomUrl);
+        imgElement.setAttribute('alt', `City photo from Unsplash`);
+        imgElement.classList.add('random-photo'); 
 
         cityImageDiv.appendChild(imgElement);
-    });
+    }
 }
 
     //Use API to get location
