@@ -4,8 +4,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    padding:30px;
+    
+    
 }
 
 .city-image-container {
@@ -22,8 +22,8 @@ body {
 
 #weather-container {
     background-color: rgba(255,255,255, 0.3);
-    width: 50%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 800px;
     max-height: 100%;
     padding: 20px;
     border-radius: 15px;
@@ -36,9 +36,14 @@ body {
     align-items: center;
     justify-content: center;
     margin: 20px 0;
+    overflow-x: hidden;
+
 } 
 
+.weather-info {
+    width: 100%;
 
+}
 
 h1, h2, label, p {
     color:#fff;
@@ -46,7 +51,7 @@ h1, h2, label, p {
 }
 
 input {
-    width:calc (50% - 16px);
+    width:calc(50% - 16px);
     padding: 8px;
     box-sizing: border-box;
     border: solid 1px white;
@@ -111,24 +116,24 @@ button:hover {
     overflow-y: hidden;
     margin: 10px 0;
     padding: 10px 0;
-    gap:5px
+    gap:5px;
+  
 }
 
 .daily-info-box {
         display: flex;
+        flex: 0 0 auto;
         flex-direction: column;
         justify-content: center;
         align-items: center; 
         padding: 0 10px;
-        min-width: 100px;
+        width: 20%;
         background-color: #8b48d7;
         border-radius: 10px;
+        min-width: 100px
 
     }
 
-.daily-info {
-    width: 180px;
-}
 
 .date {
     color:#fff;
@@ -148,36 +153,15 @@ button:hover {
     margin-top: 10px;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    #weather-container {
-        width: 80%;
-        padding: 15px;
-    }
-
-    input {
-        width: calc(100% - 16px);
-    }
-
-    button {
-        width: 80px;
-        font-size: 14px;
-    }
-
-    .today-name-par {
-        font-size: 18px;
-    }
-
-    .today-icon-img {
-        width: 80px;
-        height: 80px;
+/* Adjust for screens 760px and wider */
+@media screen and (min-width: 760px) {
+    .daily-info-boxes-container {
+        display: flex;
+        overflow: hidden; 
     }
 
     .daily-info-box {
-        min-width: 80px;
-    }
-
-    .daily-info {
-        width: 150px;
+        flex: 18%; /* Boxes will take up 18% of the container width */
+        max-width: 18%; /* Ensure max width does not exceed 18% */
     }
 }
