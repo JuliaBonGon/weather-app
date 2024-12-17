@@ -4,11 +4,7 @@ const unsplashAccessKey = 'LZwuz3lje8FCf4lp6UotirN8qvme7Z6tqjhpJjrFu_8';
 
 const cityInput = document.getElementById('cityInput');
 const searchButton = document.getElementById('searchButton');
-// const city = document.getElementById('city');
-// const maxTemperaturePar = document.getElementById('max-temperature');
-// const minTemperaturePar = document.getElementById('min-temperature');
-// const descriptionDiv = document.getElementById('description');
-// const weatherIconElem = document.getElementById('weather-icon-element');
+
 
 const fiveDayForecastDiv = document.getElementById("five-days-forecast");
 const todaysInfoSection = document.querySelector(".today-weather-result-container");
