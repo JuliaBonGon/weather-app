@@ -11,4 +11,3 @@ In this challenge you will use and consolidate your knowledge on:
 - DOM manipulation: changing the DOM based on the results of the AJAX-like requests
 - Learn to aggregate and parse data fetched from an API
 
-
