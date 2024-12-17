@@ -1,7 +1,7 @@
 # My first weather app
 
 With this solo project I created a simple weather app with basic features for the below class exercise.
-I did this repository after just 2 months learning to code.
+I was able to do this after just 2 month since I started learning to code. I had 4 days for it.
 
 ## Mission objectives
 
