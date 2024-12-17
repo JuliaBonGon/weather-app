@@ -12,18 +12,3 @@ In this challenge you will use and consolidate your knowledge on:
 - Learn to aggregate and parse data fetched from an API
 
 
-## The Mission
-
-You have been sent abroad for a 10-month work mission. Your family and friends back home ask you about the weather where you live ALL. THE. TIME.  
-Enough is enough, you decide to build a small web application for them so that you can free your time to talk about more interesting topics.
-
-### Specifications
-
-One of the more interesting features in JavaScript is to be able to get information from somewhere else.
-
-A typical flow that is used to get outside data, is to make a **request** to a certain location (url).
-
-This location will then compile the data based on the request sent, and send back a **response** to the origin of the request.
-
-This flow is often used when communicating with **RESTfull API's** (REST = when the architecture/url defines what the response should be)
-
